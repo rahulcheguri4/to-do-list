@@ -1,75 +1,100 @@
 tasks = []
 
+
+# Add a task
+def add_task():
+    task = input("Enter a task: ")
+
+    if task.strip():
+        tasks.append(task)
+        print("✅ Task added successfully!")
+    else:
+        print("❌ Task cannot be empty.")
+
+
+# View all tasks
+def view_tasks():
+    if not tasks:
+        print("📭 No tasks available.")
+        return
+
+    print("\n----- To-Do List -----")
+    for i, task in enumerate(tasks, start=1):
+        print(f"{i}. {task}")
+
+
+# Update a task
+def update_task():
+    view_tasks()
+
+    if not tasks:
+        return
+
+    try:
+        task_number = int(input("Enter task number to update: "))
+
+        if 1 <= task_number <= len(tasks):
+            new_task = input("Enter the new task: ")
+
+            if new_task.strip():
+                tasks[task_number - 1] = new_task
+                print("✅ Task updated successfully!")
+            else:
+                print("❌ Task cannot be empty.")
+        else:
+            print("❌ Invalid task number.")
+
+    except ValueError:
+        print("❌ Please enter a valid number.")
+
+
+# Remove a task
+def remove_task():
+    view_tasks()
+
+    if not tasks:
+        return
+
+    try:
+        task_number = int(input("Enter task number to remove: "))
+
+        if 1 <= task_number <= len(tasks):
+            removed_task = tasks.pop(task_number - 1)
+            print(f"✅ Removed: {removed_task}")
+        else:
+            print("❌ Invalid task number.")
+
+    except ValueError:
+        print("❌ Please enter a valid number.")
+
+
+# Main menu
 while True:
-    print("\n===== TO-DO LIST =====")
+    print("\n========== TO-DO LIST ==========")
     print("1. Add Task")
     print("2. View Tasks")
-    print("3. Complete Task")
-    print("4. Delete Task")
+    print("3. Update Task")
+    print("4. Remove Task")
     print("5. Exit")
+    print("================================")
 
     choice = input("Enter your choice (1-5): ")
 
-    # Add Task
     if choice == "1":
-        task = input("Enter a task: ")
-        tasks.append({"task": task, "completed": False})
-        print("Task added successfully!")
+        add_task()
 
-    # View Tasks
     elif choice == "2":
-        if not tasks:
-            print("No tasks available.")
-        else:
-            print("\nYour Tasks:")
-            for i, item in enumerate(tasks, start=1):
-                status = "✓" if item["completed"] else "✗"
-                print(f"{i}. [{status}] {item['task']}")
+        view_tasks()
 
-    # Complete Task
     elif choice == "3":
-        if not tasks:
-            print("No tasks available.")
-        else:
-            for i, item in enumerate(tasks, start=1):
-                print(f"{i}. {item['task']}")
+        update_task()
 
-            try:
-                task_number = int(input("Enter task number to complete: "))
-
-                if 1 <= task_number <= len(tasks):
-                    tasks[task_number - 1]["completed"] = True
-                    print("Task completed!")
-                else:
-                    print("Invalid task number.")
-
-            except ValueError:
-                print("Please enter a valid number.")
-
-    # Delete Task
     elif choice == "4":
-        if not tasks:
-            print("No tasks available.")
-        else:
-            for i, item in enumerate(tasks, start=1):
-                print(f"{i}. {item['task']}")
+        remove_task()
 
-            try:
-                task_number = int(input("Enter task number to delete: "))
-
-                if 1 <= task_number <= len(tasks):
-                    deleted_task = tasks.pop(task_number - 1)
-                    print(f"Deleted: {deleted_task['task']}")
-                else:
-                    print("Invalid task number.")
-
-            except ValueError:
-                print("Please enter a valid number.")
-
-    # Exit
     elif choice == "5":
-        print("Thank you for using the To-Do List!")
+        print("👋 Thank you for using the To-Do List!")
         break
 
     else:
-        print("Invalid choice. Please select 1-5.")
+        print("❌ Invalid choice. Please select 1-5.")
